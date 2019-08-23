@@ -1,7 +1,7 @@
 package eu.hiddenite;
 
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -52,6 +52,15 @@ public class VoidFallbackPlugin extends Plugin implements Listener {
                 }
             });
         }, 5, 5, TimeUnit.SECONDS);
+    }
+
+    @EventHandler
+    public void onServerConnectEvent(ServerConnectEvent event) {
+        if (event.getReason() == ServerConnectEvent.Reason.JOIN_PROXY) {
+            if (Objects.equals(event.getTarget(), voidServerInfo)) {
+                event.setTarget(defaultServerInfo);
+            }
+        }
     }
 
     @EventHandler
